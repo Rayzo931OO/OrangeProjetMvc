@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-//import controleur.Controleur;
-//import controleur.OrangeEvent;
-//import controleur.Technicien;
+import controleur.Controleur;
+import controleur.OrangeProjetMvc;
+import controleur.Admin;
 
 public class VueLogin extends JFrame implements ActionListener, KeyListener
 {
@@ -75,23 +75,23 @@ public class VueLogin extends JFrame implements ActionListener, KeyListener
 			this.txtMdp.setText("");
 		}
 		else if (e.getSource() == this.btConnexion) {
-			this.traitement();
+			this.VerifConnexion();
 		}
 	}
-	public void traitement ()
+	public void VerifConnexion ()
 	{
 		String email = this.txtEmail.getText(); 
 		String mdp = new String (this.txtMdp.getPassword()); 
 		
 		//on vérifie dans la base de données à travers le modèle
-		Utilisateur unUtilisateur = Controleur.selectWhereUtilisateur(email, mdp); 
-		if (unUtilisateur == null) {
+		Admin unAdmin = Controleur.selectWhereAdmin(email, mdp); 
+		if (unAdmin == null) {
 			JOptionPane.showMessageDialog(this, "Veuillez vérifier vos identifiants!");
 			this.txtEmail.setText("");
 			this.txtMdp.setText("");
-		}else {
+		}else{
 			//on lance la vue générale et on réduit la vue connexion 
-			OrangeProjetMvc.rendreVisibleGenerale(true, unUtilisateur);
+			OrangeProjetMvc.rendreVisibleGenerale(true, unAdmin);
 			OrangeProjetMvc.rendreVisibleConnexion(false);
 		}	
 	}
@@ -104,7 +104,7 @@ public class VueLogin extends JFrame implements ActionListener, KeyListener
 	@Override
 	public void keyPressed(KeyEvent e) {
 		 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			 this.traitement();
+			 this.VerifConnexion();
 		 }
 		
 	}
